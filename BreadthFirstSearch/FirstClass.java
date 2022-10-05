@@ -5,6 +5,7 @@ import java.util.*;
 public class FirstClass {
     private static String s = "Jonny";
     private static boolean ok ;
+    private static Map<String,Boolean> request;
     public static void main(String[] args) {
         Map<String, String[]> map = new HashMap<>();
         map.put("you",    new String[]{"Alice", "Bob", "Claire"});
@@ -24,26 +25,33 @@ public class FirstClass {
     private static void findBuyerWithQueue(Map<String, String[]> map, Queue<String> queue) {
         while(!queue.isEmpty()){
             String str = queue.poll();
-            if(hasSeller(str)){
+            Scanner sc = new Scanner(System.in);
+            request = new HashMap<>();
+            boolean assortment = false;
+            if(!request.containsKey(str)){
+                System.out.print(str + ", do you buy?");
+                assortment = sc.nextBoolean();
+                request.put(str, assortment);
+            }
+            if(assortment){
                 System.out.println("Mango need to " + str);
                 break;
             }
+
             else{
                 if(map.get(str) != null){
                     for (String s : map.get(str)) {
                         if(!queue.contains(s))
-                            queue.add(s);
+                            if(!request.containsKey(s))
+                                queue.add(s);
                     }
                 }
             }
 
         }
         if (queue.isEmpty()){
+            System.out.println("unfortunately, anyone didn't bought");
             return;
         }
-    }
-
-    public static boolean hasSeller(String str){
-        return s.equals(str);
     }
 }
